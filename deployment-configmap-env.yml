@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-python-app
+  labels:
+    app: sample-python-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-python-app  # Indentation corrigée ici
+  template:
+    metadata:
+      labels:
+        app: sample-python-app
+    spec:
+      containers:
+      - name: python-app
+        image: mohamedbolydev/python-sample-app-demo:v1
+        env:
+        - name: DB-PORT # le nom de la variable d'environnement,on choisit ce nom
+          valueFrom:
+            configMapKeyRef:
+              name: test-cm # doit correspondre au nom du ConfigMap dans le fichier test-cm.yml
+              key: db-port # doit correspondre au nom du ConfigMap dans le fichier test-cm.yml
+        ports:
+        - containerPort: 8000
+
+
+
+
